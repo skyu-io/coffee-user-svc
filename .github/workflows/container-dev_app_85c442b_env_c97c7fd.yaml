@@ -8,7 +8,7 @@ name: container-dev_app_85c442b_env_c97c7fd Pipeline (Skyu Generated)
   repository_dispatch:
     types: pipeline_ab4593ae-84da-42fc-9bfa-cb93ab907b34
 env:
-  ENCODED_PIPELINE_SECRET: ${{secrets.COFFEEUSERSVC_CONTAINERDEV_APP_85C442B_ENV_C97C7FD}}
+  ENCODED_PIPELINE_SECRET: ${{secrets.COFFEEUSERSVC_CONTAINERDEV_APP_85C442B_ENV_C97C7FD_YAML}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha}}
   IMAGE_NAME: 992382541807.dkr.ecr.us-east-1.amazonaws.com/coffee-user-service
   DOCKER_FILE_PATH: Dockerfile
@@ -21,13 +21,10 @@ env:
 jobs:
   code-scan:
     name: Code Scan
-    runs-on: ubuntu-latest
-    permissions: write-all
     steps:
       - name: 'Run :: Checkout repository for Code Scan'
         uses: actions/checkout@v4
-      - name: 'Run :: Decoding Secrets e39226'
-        run: |2-
+      - run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
                     echo "jq not found, installing..."
@@ -36,12 +33,12 @@ jobs:
                   fi
                   echo "${{ env.ENCODED_PIPELINE_SECRET }}" | base64 --decode | jq -r 'to_entries[] | "\(.key)=\(.value)"' | while read line; do echo "$line" >> $GITHUB_ENV; echo "::add-mask::${line#*=}"; done
                 
-      - name: 'Run :: Install Semgrep, Scan and Print'
-        run: >-
+        name: 'Run :: Decoding Secrets e39226'
+      - run: >-
           docker run -i -v "${PWD}:/src" semgrep/semgrep semgrep /src --json
           --quiet > semgrep_results.json
-      - name: 'Run :: Upload Code Scan Report'
-        run: |2-
+        name: 'Run :: Install Semgrep, Scan and Print'
+      - run: |2-
 
                   SARIF_FILE="semgrep_results.json"
                   if [ -n "$SARIF_FILE" ]; then
@@ -59,12 +56,15 @@ jobs:
                   else
                       echo "SARIF file not found."
                   fi
+        name: 'Run :: Upload Code Scan Report'
+    runs-on: ubuntu-latest
+    permissions: write-all
   _status-pending:
     name: _status Pending
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
-      - name: 'Run :: Decoding Secrets 64fb94'
+      - name: 'Run :: Decoding Secrets 2f1061'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.client_payload.releaseData }}
     steps:
-      - name: 'Run :: Decoding Secrets 5f7e76'
+      - name: 'Run :: Decoding Secrets 358b13'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
@@ -157,7 +157,7 @@ jobs:
 
               git fetch --all
               git checkout ${{ github.event.client_payload.commitId }}
-      - name: 'Run :: Decoding Secrets f0a097'
+      - name: 'Run :: Decoding Secrets edeab0'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
@@ -167,7 +167,7 @@ jobs:
                   fi
                   echo "${{ env.ENCODED_PIPELINE_SECRET }}" | base64 --decode | jq -r 'to_entries[] | "\(.key)=\(.value)"' | while read line; do echo "$line" >> $GITHUB_ENV; echo "::add-mask::${line#*=}"; done
                 
-      - name: 'Run :: Configure AWS credentials 907b5eff-f75c-406d-84a7-67b7dd6a52d4'
+      - name: 'Run :: Configure AWS credentials 851f13dc-7932-4dde-bb6a-e4060ccc19aa'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ env.roleARN }}
@@ -280,7 +280,7 @@ jobs:
       - build-and-push
     if: ${{ !(failure() || cancelled()) }}
     steps:
-      - name: 'Run :: Decoding Secrets 5e3080'
+      - name: 'Run :: Decoding Secrets 76ea88'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
@@ -303,7 +303,7 @@ jobs:
       - build-and-push
     if: ${{ failure() || cancelled() }}
     steps:
-      - name: 'Run :: Decoding Secrets 7e5559'
+      - name: 'Run :: Decoding Secrets a39825'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
@@ -328,7 +328,7 @@ jobs:
       needs.build-and-push.outputs.stepsCanProceed == 'true' &&
       github.event.client_payload.releaseData == null
     steps:
-      - name: 'Run :: Decoding Secrets ed9617'
+      - name: 'Run :: Decoding Secrets 2a2b46'
         run: |2-
 
                   if [ ! -x "$(command -v jq)" ]; then
