@@ -8,7 +8,7 @@ import { dataSource } from "./configs/db";
 dataSource
   .initialize()
   .then(() => {
-    console.log("DB Connected and Initiallized");
+    console.log("DB Connected and Initialized"); // Fixed typo in 'Initialized'
     const app = express();
     app.use(express.json());
     app.use(
