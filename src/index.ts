@@ -8,7 +8,7 @@ import { dataSource } from "./configs/db";
 dataSource
   .initialize()
   .then(() => {
-    console.log("DB Connected and Initiallized");
+    console.log("DB Connected and Initialized");
     const app = express();
     app.use(express.json());
     app.use(
@@ -20,8 +20,9 @@ dataSource
     app.use(cors());
     app.use(router);
 
-    app.listen(configData.port, () => {
-      console.log(`coffee-user-svc started on port :: ${configData.port}`);
+    const port = configData.port || 5001; // Ensure a valid port number is being used
+    app.listen(port, () => {
+      console.log(`coffee-user-svc started on port :: ${port}`);
     });
   })
   .catch((err) => {
